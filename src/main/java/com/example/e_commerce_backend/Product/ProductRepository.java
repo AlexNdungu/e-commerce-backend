@@ -1,4 +1,6 @@
 package com.example.e_commerce_backend.Product;
 
-public interface ProductRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product,Long> {
 }
