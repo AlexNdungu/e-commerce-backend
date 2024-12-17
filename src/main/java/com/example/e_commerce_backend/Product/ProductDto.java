@@ -1,5 +1,6 @@
 package com.example.e_commerce_backend.Product;
 
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class ProductDto {
     private String name;
     private String description;
     private double price;
+    @Lob
     private byte[] image;
 }

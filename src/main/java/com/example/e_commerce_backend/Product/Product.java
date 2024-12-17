@@ -28,6 +28,7 @@ public class Product {
     private double price;
 
     @Column(name = "product_image")
+    @Lob
     private byte[] image;
 
 }
