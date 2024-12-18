@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -74,16 +75,25 @@ public class ProductController {
 
     // Method to serve images
     @GetMapping("/images/{imageName}")
-    public ResponseEntity<?> getImage(@PathVariable("imageName") String imageName){
-        Path filePath = Paths.get(UPLOAD_DIR).resolve(imageName).normalize();
-        Resource resource = new FileSystemResource(filePath);
-        if (!resource.exists()) {
-            return new ResponseEntity<>("Image not found", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> getImage(@PathVariable("imageName") String imageName) {
+        try {
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+            Path filePath = Paths.get(UPLOAD_DIR).resolve(imageName).normalize();
+            Resource resource = new FileSystemResource(filePath);
+
+            if (!resource.exists()) {
+                return new ResponseEntity<>("Image not found", HttpStatus.NOT_FOUND);
+            }
+
+            String contentType = "image/jpeg";
+
+            return ResponseEntity.ok()
+                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error loading image: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
