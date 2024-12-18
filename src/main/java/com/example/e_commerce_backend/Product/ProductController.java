@@ -1,7 +1,10 @@
 package com.example.e_commerce_backend.Product;
 
 import lombok.AllArgsConstructor;
-import org.springframework.boot.system.ApplicationHome;
+
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +70,20 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getAllProducts(){
         List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
+    }
+
+    // Method to serve images
+    @GetMapping("/images/{imageName}")
+    public ResponseEntity<?> getImage(@PathVariable("imageName") String imageName){
+        Path filePath = Paths.get(UPLOAD_DIR).resolve(imageName).normalize();
+        Resource resource = new FileSystemResource(filePath);
+        if (!resource.exists()) {
+            return new ResponseEntity<>("Image not found", HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
 }
