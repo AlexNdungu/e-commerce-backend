@@ -16,6 +16,6 @@ public class ProductDto {
     private String name;
     private String description;
     private double price;
-    @Lob
-    private byte[] image;
+    private String categoryId;
+    private String imagePath;
 }

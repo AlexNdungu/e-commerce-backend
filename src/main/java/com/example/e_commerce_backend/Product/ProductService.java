@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface ProductService {
 
-    ProductDto createProduct(ProductDto productDto, MultipartFile imageFile) throws IOException;
+    ProductDto createProduct(ProductDto productDto) throws IOException;
 }

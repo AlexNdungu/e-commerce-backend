@@ -27,8 +27,10 @@ public class Product {
     @Column(name = "product_price")
     private double price;
 
-    @Column(name = "product_image")
-    @Lob
-    private byte[] image;
+    @Column(name = "category_id")
+    private String categoryId;
+
+    @Column(name = "product_image_path")
+    private String imagePath;
 
 }
