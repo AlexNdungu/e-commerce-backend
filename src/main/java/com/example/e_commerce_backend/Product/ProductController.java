@@ -66,13 +66,6 @@ public class ProductController {
         }
     }
 
-    // Build get all products api
-    @GetMapping
-    public ResponseEntity<List<ProductDto>> getAllProducts(){
-        List<ProductDto> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
-    }
-
     // Method to serve images
     @GetMapping("/images/{imageName}")
     public ResponseEntity<?> getImage(@PathVariable("imageName") String imageName) {
@@ -94,6 +87,19 @@ public class ProductController {
         } catch (Exception e) {
             return new ResponseEntity<>("Error loading image: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // Build get all products api
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getAllProducts(){
+        List<ProductDto> products = productService.getAllProducts();
+
+        for (ProductDto product : products) {
+            String imageUrl = "http://localhost:8080/api/product/images/" + product.getImagePath();
+            product.setImagePath(imageUrl);
+        }
+
+        return ResponseEntity.ok(products);
     }
 
 }
