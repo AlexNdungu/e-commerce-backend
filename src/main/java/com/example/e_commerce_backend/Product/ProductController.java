@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin("*")
@@ -31,8 +32,6 @@ public class ProductController {
             @RequestParam("categoryId") String categoryId,
             @RequestParam(value = "file", required = false) MultipartFile file
     ){
-
-        System.out.println(categoryId);
 
         try{
             ProductDto productDto = new ProductDto();
@@ -61,6 +60,13 @@ public class ProductController {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // Build get all products api
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getAllProducts(){
+        List<ProductDto> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
 }
